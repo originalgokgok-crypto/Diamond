@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garena FF Diamond Cloud Injector v4.0</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono&display=swap');
+
+        :root {
+            --primary: #00f2fe;
+            --gold: #f1c40f;
+            --danger: #ff4757;
+            --dark-bg: #0b0e14;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            background-image: radial-gradient(circle at center, #16213e 0%, #0b0e14 100%);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+
+        /* Header & Priority */
+        .priority-header {
+            background: linear-gradient(90deg, #f1c40f, #e67e22);
+            color: black;
+            font-weight: bold;
+            font-size: 12px;
+            padding: 5px 15px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 10px;
+            box-shadow: 0 0 15px var(--gold);
+        }
+
+        .user-id-box {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--primary);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            font-family: 'Roboto Mono', monospace;
+            margin-bottom: 20px;
+        }
+
+        /* Diamond Grid */
+        .grid-title { font-size: 14px; margin-bottom: 10px; color: var(--primary); }
+        .diamond-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .diamond-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .diamond-item:hover, .diamond-item.active {
+            border-color: var(--primary);
+            background: rgba(0, 242, 254, 0.1);
+            transform: scale(1.03);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+        }
+
+        /* Button */
+        .btn-start {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 114, 255, 0.5);
+            transition: 0.3s;
+        }
+
+        .btn-start:disabled { filter: grayscale(1); cursor: not-allowed; }
+
+        /* Console Log */
+        .console {
+            background: #000;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            height: 150px;
+            overflow-y: auto;
+            border-left: 4px solid var(--primary);
+            display: none;
+        }
+
+        .log-line { margin-bottom: 5px; color: #00ff00; }
+
+        /* Prank Overlay */
+        #prank-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: black;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            text-align: center;
+        }
+
+        #prank-overlay img {
+            max-width: 90%;
+            border: 5px solid white;
+            border-radius: 15px;
+        }
+
+        .prank-text {
+            font-size: 24px;
+            color: white;
+            margin-top: 20px;
+            padding: 0 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div style="text-align:center;">
+        <div class="priority-header">⚡ PRIORITY SERVER VIP</div>
+        <h3 style="margin: 10px 0; letter-spacing: 2px;">DIAMOND CLOUD v4.0</h3>
+    </div>
+
+    <div class="user-id-box">
+        TARGET ID: <span id="target-id" style="color:var(--gold)">253748651</span>
+    </div>
+
+    <div class="grid-title">SELECT AMOUNT:</div>
+    <div class="diamond-grid">
+        <div class="diamond-item active" onclick="select(this, 720)">💎 720 Diamonds</div>
+        <div class="diamond-item" onclick="select(this, 1000)">💎 1,000 Diamonds</div>
+        <div class="diamond-item" onclick="select(this, 5500)">💎 5,500 Diamonds</div>
+        <div class="diamond-item" onclick="select(this, 99999)">💎 99,999 (SULTAN)</div>
+    </div>
+
+    <button class="btn-start" id="btn" onclick="startProcess()">START INJECTION</button>
+
+    <div class="console" id="console"></div>
+</div>
+
+<div id="prank-overlay">
+    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=prank" id="prank-img" alt="PRANK">
+    <div class="prank-text">GIMANA SEHAT?<br>KENA PRANK KAN LO! 😂</div>
+    <button onclick="location.reload()" style="margin-top:20px; padding:10px 20px;">BACK</button>
+</div>
+
+<script>
+    let selectedAmount = 720;
+
+    function select(el, amount) {
+        document.querySelectorAll('.diamond-item').forEach(d => d.classList.remove('active'));
+        el.classList.add('active');
+        selectedAmount = amount;
+    }
+
+    function addLog(text, delay) {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                const con = document.getElementById('console');
+                con.innerHTML += `<div class="log-line">> ${text}</div>`;
+                con.scrollTop = con.scrollHeight;
+                resolve();
+            }, delay);
+        });
+    }
+
+    async function startProcess() {
+        const btn = document.getElementById('btn');
+        const consoleBox = document.getElementById('console');
+        
+        btn.disabled = true;
+        btn.innerText = "INJECTING...";
+        consoleBox.style.display = "block";
+
+        await addLog("Connecting to Garena Global Server...", 800);
+        await addLog("Authorizing Proxy 103.21.210.11...", 1000);
+        await addLog("Searching Player ID: 253748651...", 1200);
+        await addLog("ID Found! Region: INDONESIA", 800);
+        await addLog(`Preparing package: ${selectedAmount} Diamonds...`, 1500);
+        await addLog("Injecting SQL Script to Database...", 2000);
+        await addLog("Bypassing Anticheat Guard v9.0...", 1800);
+        await addLog("Finalizing Data Packets...", 1500);
+        await addLog("Status: SUCCESS (100%)", 1000);
+
+        setTimeout(() => {
+            document.getElementById('prank-overlay').style.display = 'flex';
+            // Sound effect prank bisa ditambahkan di sini jika mau
+        }, 1000);
+    }
+</script>
+
+</body>
+</html>
